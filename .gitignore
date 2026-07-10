@@ -1,0 +1,12 @@
+# Obsidian local-only files
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.trash/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Claude Code project config (local tool settings, not vault content)
+.claude/
