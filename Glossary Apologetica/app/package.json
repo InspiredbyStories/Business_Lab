@@ -1,0 +1,72 @@
+{
+  "name": "glossary-apologetica",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Private local religious studies search engine — Version 1: Islam",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "author": {
+    "name": "Glossary Apologetica"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "app": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "43.4.1",
+    "electron-builder": "26.0.12"
+  },
+  "build": {
+    "appId": "com.glossaryapologetica.desktop",
+    "productName": "Glossary Apologetica",
+    "asar": true,
+    "asarUnpack": [
+      "tools/**/*"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "server.js",
+      "src/**/*",
+      "public/**/*",
+      "tools/**/*",
+      "electron/**/*",
+      "build/icon.png",
+      "package.json",
+      "!**/*.map",
+      "!data/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "artifactName": "Glossary-Apologetica-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Glossary Apologetica",
+      "uninstallDisplayName": "Glossary Apologetica",
+      "deleteAppDataOnUninstall": false,
+      "installerLanguages": [
+        "en_US"
+      ]
+    }
+  }
+}

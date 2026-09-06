@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Glossary Apologetica</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ======================= LOGIN / SET PASSWORD ======================== -->
+<div class="authscreen" id="authscreen" hidden>
+  <div class="authcard">
+    <div class="authcard__mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v13a1.5 1.5 0 0 0-1.5-1.5H5.5A1.5 1.5 0 0 1 4 16z" />
+        <path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v13a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 0 20 16z" />
+      </svg>
+    </div>
+    <h1 class="authcard__title">Glossary Apologetica</h1>
+
+    <div id="auth-setup" hidden>
+      <p class="authcard__sub">
+        This is the first time this application has been opened. Choose a password —
+        it will be needed to open your library from this or any other computer.
+      </p>
+      <form id="setup-form">
+        <input type="password" id="setup-password" class="input" placeholder="Choose a password (8+ characters)" autocomplete="new-password" />
+        <input type="password" id="setup-password-confirm" class="input" placeholder="Type it again" autocomplete="new-password" style="margin-top:10px" />
+        <p class="autherror" id="setup-error" hidden></p>
+        <button type="submit" class="btn btn--primary" style="width:100%; margin-top:16px">Set password and continue</button>
+      </form>
+    </div>
+
+    <div id="auth-login" hidden>
+      <p class="authcard__sub">Enter your password to open your library.</p>
+      <form id="login-form">
+        <input type="password" id="login-password" class="input" placeholder="Password" autocomplete="current-password" autofocus />
+        <p class="autherror" id="login-error" hidden></p>
+        <button type="submit" class="btn btn--primary" style="width:100%; margin-top:16px">Log in</button>
+      </form>
+    </div>
+
+    <p class="authcard__foot">Your library stays on this computer. This password only controls who can open it.</p>
+  </div>
+</div>
+
+<div class="app" id="app-root" hidden>
+
+  <!-- ============================ SIDEBAR ============================ -->
+  <aside class="sidebar">
+    <div class="sidebar__identity">
+      <div class="sidebar__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v13a1.5 1.5 0 0 0-1.5-1.5H5.5A1.5 1.5 0 0 1 4 16z" />
+          <path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v13a1.5 1.5 0 0 1 1.5-1.5h5A1.5 1.5 0 0 0 20 16z" />
+        </svg>
+      </div>
+      <div>
+        <div class="sidebar__title">Glossary Apologetica</div>
+        <div class="sidebar__subtitle">Religious Studies Search</div>
+      </div>
+    </div>
+
+    <div class="sidebar__divider"></div>
+
+    <nav class="sidebar__nav">
+      <div class="sidebar__label">Religions</div>
+
+      <div id="religion-list"></div>
+
+      <div class="sidebar__divider"></div>
+      <div class="sidebar__label">Workspace</div>
+
+      <button class="navitem is-active" data-view="search" type="button">
+        <svg viewBox="0 0 24 24" class="navitem__icon" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        Search
+      </button>
+      <button class="navitem" data-view="form" type="button">
+        <svg viewBox="0 0 24 24" class="navitem__icon" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Add New Entry
+      </button>
+      <button class="navitem" data-view="library" type="button">
+        <svg viewBox="0 0 24 24" class="navitem__icon" aria-hidden="true"><path d="M4 5h5v14H4zM11 5h4v14h-4zM17 6l3 13"/></svg>
+        Library
+      </button>
+      <button class="navitem" data-view="faq" type="button">
+        <svg viewBox="0 0 24 24" class="navitem__icon" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.3 9a2.7 2.7 0 0 1 5.2 1c0 1.8-2.5 1.8-2.5 3.6"/><circle cx="12" cy="16.7" r="0.15" fill="currentColor" stroke-width="1"/></svg>
+        FAQ
+      </button>
+      <button class="navitem" data-view="settings" type="button">
+        <svg viewBox="0 0 24 24" class="navitem__icon" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2M12 19v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M3 12h2M19 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        Settings
+      </button>
+    </nav>
+
+    <div class="sidebar__foot">
+      <div class="sidebar__status">
+        <span class="dot-live" aria-hidden="true"></span>
+        Private · this computer only
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================== WORKSPACE ============================ -->
+  <main class="workspace" id="workspace">
+
+    <!-- ------------------------- SEARCH VIEW ------------------------ -->
+    <section class="view is-visible" id="view-search">
+      <header class="page-head">
+        <p class="page-eyebrow">Currently searching</p>
+        <h1 class="page-title" id="search-title">Islamic Studies</h1>
+        <p class="page-sub" id="search-subtitle">Search your Quran, Hadith, scholarly work and personal research.</p>
+      </header>
+
+      <form class="searchbar" id="search-form" autocomplete="off">
+        <div class="searchbar__field">
+          <svg viewBox="0 0 24 24" class="searchbar__icon" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Search Quran, Hadith, scholars, and personal notes…"
+            aria-label="Search your Islamic research database"
+          />
+          <button type="button" class="searchbar__clear" id="search-clear" title="Clear search" hidden>&times;</button>
+        </div>
+        <button type="submit" class="btn btn--primary btn--search">
+          <svg viewBox="0 0 24 24" class="btn__icon" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          Search
+        </button>
+      </form>
+
+      <div class="filters">
+        <span class="filters__label">Filter results</span>
+        <div class="filters__row" id="filter-row"></div>
+      </div>
+
+      <div class="concept-note" id="concept-note" hidden></div>
+
+      <div id="search-results"></div>
+
+      <section class="explore" id="explore" hidden>
+        <div class="explore__head">
+          <h2 class="section-title">Explore this search</h2>
+          <p class="section-sub">
+            These buttons retrieve more of your own material. They do not decide what is true —
+            you make the final determination.
+          </p>
+        </div>
+        <div class="explore__buttons">
+          <button class="btn btn--outline explore-btn" data-mode="related" type="button">Related material</button>
+          <button class="btn btn--outline explore-btn is-support" data-mode="supporting" type="button">Supporting material</button>
+          <button class="btn btn--outline explore-btn is-contra" data-mode="contradicting" type="button">Potentially contradicting material</button>
+        </div>
+        <div id="explore-results"></div>
+      </section>
+    </section>
+
+    <!-- ------------------------- ENTRY VIEW ------------------------- -->
+    <section class="view" id="view-entry">
+      <button class="backlink" id="entry-back" type="button">&larr; Back to results</button>
+      <div id="entry-body"></div>
+    </section>
+
+    <!-- ------------------------- FORM VIEW -------------------------- -->
+    <section class="view" id="view-form">
+      <button class="backlink" id="form-back" type="button">&larr; Back</button>
+
+      <header class="page-head">
+        <h1 class="page-title" id="form-title">Add New Entry</h1>
+        <p class="page-sub" id="form-sub">Everything except the source and the text is optional.</p>
+      </header>
+
+      <form id="entry-form" autocomplete="off">
+        <input type="hidden" id="f-id" />
+
+        <fieldset class="formsection">
+          <legend class="formsection__legend">Category</legend>
+          <div class="field">
+            <label class="field__label" for="f-religion">Religion category</label>
+            <select id="f-religion" class="input"></select>
+            <p class="field__hint">Changing this changes which sources are available below.</p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="f-group">Source <span class="req">required</span></label>
+            <select id="f-group" class="input"></select>
+          </div>
+        </fieldset>
+
+        <fieldset class="formsection">
+          <legend class="formsection__legend">Source information</legend>
+
+          <div class="field">
+            <label class="field__label" for="f-title">Title</label>
+            <input type="text" id="f-title" class="input" placeholder="e.g. Genesis 1:1, or a paper's title" />
+            <p class="field__hint">Left blank, a title is built from the book and reference.</p>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="f-collection">Collection</label>
+              <input type="text" id="f-collection" class="input" list="collection-list" placeholder="e.g. a translation, an edition, a named collection…" />
+              <datalist id="collection-list"></datalist>
+            </div>
+            <div class="field">
+              <label class="field__label" for="f-book">Book / Surah</label>
+              <input type="text" id="f-book" class="input" placeholder="e.g. a book, surah, sutra or saga" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="f-chapter">Chapter</label>
+              <input type="text" id="f-chapter" class="input" />
+            </div>
+            <div class="field">
+              <label class="field__label" for="f-reference">Verse / Ayah / Hadith number</label>
+              <input type="text" id="f-reference" class="input" placeholder="e.g. 4:157, or a hadith number" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="f-author">Author / Narrator</label>
+              <input type="text" id="f-author" class="input" />
+            </div>
+            <div class="field">
+              <label class="field__label" for="f-date">Date</label>
+              <input type="text" id="f-date" class="input" placeholder="Optional" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="f-language">Language</label>
+              <input type="text" id="f-language" class="input" list="language-list" placeholder="English" />
+              <datalist id="language-list">
+                <option>Arabic</option><option>English</option><option>Arabic / English</option>
+                <option>Persian</option><option>Urdu</option><option>Turkish</option>
+                <option>Greek</option><option>Hebrew</option><option>Latin</option>
+              </datalist>
+            </div>
+            <div class="field">
+              <label class="field__label" for="f-type">Type</label>
+              <input type="text" id="f-type" class="input" list="type-list" />
+              <datalist id="type-list">
+                <option>Primary Religious Text</option><option>Hadith</option>
+                <option>Commentary</option><option>Academic Paper</option>
+                <option>Book</option><option>Article</option>
+                <option>Personal Research</option><option>Historical Source</option>
+              </datalist>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="f-uid">Unique identifier</label>
+            <input type="text" id="f-uid" class="input input--mono" placeholder="Generated automatically" />
+            <p class="field__hint">Generated for you. Change it only if you keep your own numbering.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="formsection">
+          <legend class="formsection__legend">Content</legend>
+          <div class="field">
+            <label class="field__label" for="f-text">Text</label>
+            <textarea id="f-text" class="input textarea textarea--tall" placeholder="The primary text of the entry."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset class="formsection">
+          <legend class="formsection__legend">Upload file</legend>
+          <div class="dropzone" id="dropzone">
+            <input type="file" id="f-file" hidden />
+            <svg viewBox="0 0 24 24" class="dropzone__icon" aria-hidden="true"><path d="M12 16V4M12 4 7.5 8.5M12 4l4.5 4.5"/><path d="M4 16v2.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>
+            <span class="dropzone__label">Upload file</span>
+            <span class="dropzone__hint">PDF · TXT · MD · DOCX · PNG · JPG</span>
+            <span class="dropzone__note">The original is copied into your library. Your file stays where it is.</span>
+          </div>
+          <div id="file-status" class="filestatus" hidden></div>
+          <div id="attachment-list" class="attachments"></div>
+        </fieldset>
+
+        <fieldset class="formsection">
+          <legend class="formsection__legend">Tags</legend>
+          <div class="field">
+            <div class="taginput">
+              <input type="text" id="f-tag" class="input" list="tag-list" placeholder="Add a tag, then press Enter" />
+              <datalist id="tag-list"></datalist>
+              <button type="button" class="btn btn--secondary" id="tag-add">Add</button>
+            </div>
+            <div class="tagrow" id="tag-row"></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="formsection">
+          <legend class="formsection__legend">Personal notes</legend>
+          <div class="field">
+            <p class="field__hint field__hint--top">
+              Your own observations, arguments, questions and conclusions. They are searchable,
+              and always shown as yours — never as part of the source text.
+            </p>
+            <textarea id="f-notes" class="input textarea" placeholder="Your thoughts on this material."></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset class="formsection">
+          <legend class="formsection__legend">Related entries</legend>
+          <div class="field">
+            <input type="text" id="related-search" class="input" placeholder="Search your library to link an entry…" />
+            <div id="related-suggestions" class="relatedsuggest"></div>
+            <div id="related-chosen" class="tagrow"></div>
+          </div>
+        </fieldset>
+
+        <div class="formactions">
+          <button type="button" class="btn btn--secondary" id="form-cancel">Cancel</button>
+          <div class="formactions__right">
+            <button type="button" class="btn btn--danger-quiet" id="form-delete" hidden>Delete entry</button>
+            <button type="submit" class="btn btn--primary" id="form-submit">Submit new entry</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- ------------------------ LIBRARY VIEW ------------------------ -->
+    <section class="view" id="view-library">
+      <header class="page-head">
+        <h1 class="page-title">Library</h1>
+        <p class="page-sub" id="library-subtitle">Everything stored in the Islam category.</p>
+      </header>
+
+      <div class="librarybar">
+        <div class="searchbar__field searchbar__field--small">
+          <svg viewBox="0 0 24 24" class="searchbar__icon" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="search" id="library-filter" placeholder="Filter by title, reference or author…" />
+        </div>
+        <div class="filters__row" id="library-filters"></div>
+      </div>
+
+      <div id="library-list"></div>
+    </section>
+
+    <!-- -------------------------- FAQ VIEW --------------------------- -->
+    <section class="view" id="view-faq">
+      <header class="page-head">
+        <h1 class="page-title">Frequently Asked Questions</h1>
+        <p class="page-sub">
+          Questions you've chosen to keep answered, in your own words, with links to the material
+          in your library that supports each answer.
+        </p>
+      </header>
+
+      <div class="filters">
+        <span class="filters__label">Religion</span>
+        <div class="filters__row" id="faq-religion-row"></div>
+      </div>
+
+      <div class="faqbar">
+        <button class="btn btn--primary" id="faq-add-btn" type="button">
+          <svg viewBox="0 0 24 24" class="btn__icon" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Add a question
+        </button>
+      </div>
+
+      <div id="faq-list"></div>
+    </section>
+
+    <!-- ----------------------- SETTINGS VIEW ------------------------ -->
+    <section class="view" id="view-settings">
+      <header class="page-head">
+        <h1 class="page-title">Settings</h1>
+        <p class="page-sub">Appearance, search behaviour and your database.</p>
+      </header>
+
+      <section class="settingsection">
+        <h2 class="section-title">Appearance</h2>
+        <div class="radiorow" id="theme-row">
+          <label class="radio"><input type="radio" name="theme" value="system" /><span>System default</span></label>
+          <label class="radio"><input type="radio" name="theme" value="light" /><span>Light mode</span></label>
+          <label class="radio"><input type="radio" name="theme" value="dark" /><span>Dark mode</span></label>
+        </div>
+      </section>
+
+      <section class="settingsection">
+        <h2 class="section-title">Search</h2>
+        <div class="settingrow">
+          <div>
+            <div class="settingrow__name">Concept search</div>
+            <div class="settingrow__desc">
+              Finds material by meaning as well as wording — searching “crucifixion” also finds
+              “they did not kill him”. Turn it off to match only the words you type.
+            </div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="set-semantic" />
+            <span class="switch__track"><span class="switch__thumb"></span></span>
+          </label>
+        </div>
+        <div class="settingrow">
+          <div>
+            <div class="settingrow__name">Exact match priority</div>
+            <div class="settingrow__desc">How strongly an exact phrase outranks a merely related passage.</div>
+          </div>
+          <select id="set-exact" class="input input--inline">
+            <option value="high">High</option>
+            <option value="balanced">Balanced</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="settingsection">
+        <h2 class="section-title">Remote access</h2>
+        <p class="settingnote" id="tunnel-note">Checking…</p>
+        <div class="settingactions" id="tunnel-actions" hidden>
+          <input type="text" id="tunnel-url" class="input input--mono" readonly style="flex:1; min-width:260px" />
+          <button class="btn btn--secondary" id="btn-copy-url" type="button">Copy address</button>
+        </div>
+      </section>
+
+      <section class="settingsection">
+        <h2 class="section-title">Password</h2>
+        <p class="settingnote">This password controls who can open your library, including from another computer.</p>
+        <form id="password-form" class="field-row" style="margin-top:12px; align-items:end">
+          <div class="field">
+            <label class="field__label" for="pw-current">Current password</label>
+            <input type="password" id="pw-current" class="input" autocomplete="current-password" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="pw-new">New password</label>
+            <input type="password" id="pw-new" class="input" autocomplete="new-password" />
+          </div>
+        </form>
+        <div class="settingactions">
+          <button class="btn btn--secondary" id="btn-change-password" type="button">Change password</button>
+          <button class="btn btn--secondary" id="btn-logout" type="button">Log out</button>
+        </div>
+        <p class="settingnote">Changing your password signs out every other device that was logged in.</p>
+      </section>
+
+      <section class="settingsection">
+        <h2 class="section-title">Database</h2>
+        <div class="statgrid" id="stat-grid"></div>
+        <div class="settingactions">
+          <button class="btn btn--secondary" id="btn-backup" type="button">Back up database</button>
+          <button class="btn btn--secondary" id="btn-export" type="button">Export as JSON</button>
+          <button class="btn btn--secondary" id="btn-folder" type="button">Open data folder</button>
+          <button class="btn btn--secondary" id="btn-reindex" type="button">Rebuild search index</button>
+        </div>
+        <p class="settingnote" id="data-note"></p>
+      </section>
+
+      <section class="settingsection">
+        <h2 class="section-title">Getting started</h2>
+        <p class="settingnote">
+          Five clearly-marked example entries can be loaded so you can see how searching, grouping
+          and personal notes behave. Delete them whenever you like.
+        </p>
+        <div class="settingactions">
+          <button class="btn btn--secondary" id="btn-samples" type="button">Load example entries</button>
+        </div>
+      </section>
+
+      <section class="settingsection">
+        <h2 class="section-title">About</h2>
+        <p class="settingnote">
+          Glossary Apologetica version 1.0.0 — a private search and retrieval tool for your own
+          research material. It does not use the internet, does not generate answers, and does not
+          add anything to your results that you did not put into it.
+        </p>
+        <div class="settingactions">
+          <button class="btn btn--secondary" id="btn-quit" type="button">Close application</button>
+          <p class="settingnote" id="managed-note" hidden>
+            This library is being served by the always-on background task, so there is nothing to
+            close here — it keeps running so remote access stays available. Use
+            "Remove Remote Access.ps1" if you want to turn that off.
+          </p>
+        </div>
+      </section>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal__box" role="dialog" aria-modal="true">
+    <h3 class="modal__title" id="modal-title">Are you sure?</h3>
+    <p class="modal__text" id="modal-text"></p>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" id="modal-cancel" type="button">Cancel</button>
+      <button class="btn btn--danger" id="modal-confirm" type="button">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="faq-modal" hidden>
+  <div class="modal__box modal__box--wide" role="dialog" aria-modal="true">
+    <h3 class="modal__title" id="faq-modal-title">Add a question</h3>
+    <form id="faq-form">
+      <input type="hidden" id="faq-id" />
+      <div class="field">
+        <label class="field__label" for="faq-question">Question</label>
+        <input type="text" id="faq-question" class="input" placeholder="Does the Quran say Jesus was crucified?" />
+      </div>
+      <div class="field">
+        <label class="field__label" for="faq-answer">Your answer</label>
+        <p class="field__hint field__hint--top">
+          Written in your own words, from your own research. Never generated for you.
+        </p>
+        <textarea id="faq-answer" class="input textarea" placeholder="Summarize what your library shows about this."></textarea>
+      </div>
+      <div class="field">
+        <label class="field__label">Supporting entries</label>
+        <input type="text" id="faq-entry-search" class="input" placeholder="Search your library to link an entry…" />
+        <div id="faq-entry-suggestions" class="relatedsuggest"></div>
+        <div id="faq-entry-chosen" class="tagrow"></div>
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--secondary" id="faq-modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn--primary" id="faq-modal-save">Save question</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="app.js" type="module"></script>
+</body>
+</html>

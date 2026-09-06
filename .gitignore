@@ -10,3 +10,9 @@ Thumbs.db
 
 # Claude Code project config (local tool settings, not vault content)
 .claude/
+
+# Glossary Apologetica build artefacts
+Glossary Apologetica/.build/
+Glossary Apologetica/installer/
+Glossary Apologetica/app/data/
+Glossary Apologetica/app/tools/cloudflared.exe
